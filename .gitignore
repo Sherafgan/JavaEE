@@ -1,5 +1,11 @@
 #FirstServlet
-FirstServlet/build/
-FirstServlet/dist/
-FirstServlet/nbproject/
-build.xml
+Servlets/FirstServlet/build/
+Servlets/FirstServlet/dist/
+Servlets/FirstServlet/nbproject/
+Servlets/FirstServlet/build.xml
+
+#HW_Servlet_Image
+Servlets/HW_Servlet_Image/build/
+Servlets/HW_Servlet_Image/dist/
+Servlets/HW_Servlet_Image/nbproject/
+Servlets/HW_Servlet_Image/build.xml
