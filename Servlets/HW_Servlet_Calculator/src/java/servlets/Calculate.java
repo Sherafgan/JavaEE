@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet;
+package servlets;
 
+import calc.Calculator;
+import io.LogsIO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sherafgan
  */
-public class SecondServlet extends HttpServlet {
+public class Calculate extends HttpServlet {
+
+    private int idOfClient = 0;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,34 +36,60 @@ public class SecondServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        Object obj = request.getSession().getAttribute("count");
+        try (PrintWriter out = response.getWriter()) {
 
-        if (obj == null) {
-            request.getSession().setAttribute("count", 1);
-        } else {
-            int sessionCounter = (int) obj;
-            sessionCounter++;
-            request.getSession().setAttribute("count", sessionCounter);
-        }
+            Object obj = request.getSession().getAttribute("idForLogs");
 
-        PrintWriter out = response.getWriter();
+            if (obj == null) {
+                request.getSession().setAttribute("idForLogs", idOfClient++);
+            }
 
-        try {
+            int idForLogs = (int) request.getSession().getAttribute("idForLogs");
+
+            LogsIO logsio = new LogsIO();
+
+            float firstNumber = Float.parseFloat(request.getParameter("firstNumber"));
+            float secondNumber = Float.parseFloat(request.getParameter("secondNumber"));
+            String operation = request.getParameter("operation");
+
+            Float finalResult = null;
+
+            switch (operation) {
+                case "add":
+                    finalResult = Calculator.add(firstNumber, secondNumber);
+                    logsio.put(firstNumber, secondNumber, "add", idForLogs);
+                    break;
+                case "substract":
+                    finalResult = Calculator.substract(firstNumber, secondNumber);
+                    logsio.put(firstNumber, secondNumber, "substract", idForLogs);
+                    break;
+                case "multiply":
+                    finalResult = Calculator.multiply(firstNumber, secondNumber);
+                    logsio.put(firstNumber, secondNumber, "multiply", idForLogs);
+                    break;
+                case "divide":
+                    finalResult = Calculator.divide(firstNumber, secondNumber);
+                    logsio.put(firstNumber, secondNumber, "divide", idForLogs);
+                    break;
+            }
+
+            List<String> logs = logsio.getLogsFor(idForLogs);
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SecondServlet</title>");
+            out.println("<title>Servlet Calculate</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SecondServlet at " + request.getContextPath() + "</h1>");
-            out.println("<h1>" + request.getSession().getAttribute("count") + "</h1>");
-//            out.println("<h1>" + request.getParameter("p1") + "</h1>");
+//            out.println("<h1>Servlet Calculate at " + request.getContextPath() + "</h1>");
+            out.println("<h1> Result: " + finalResult + "</h1>");
+            out.println("<h2> Your recent operations: </h2>");
+            for (String s : logs) {
+                out.println("<p>" + s + "</p>");
+            }
             out.println("</body>");
             out.println("</html>");
-        } finally {
-            out.close();
         }
     }
 
