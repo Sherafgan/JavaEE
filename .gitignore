@@ -21,3 +21,9 @@ Servlets/HW_Servlet_HTTP_codes/build/
 Servlets/HW_Servlet_HTTP_codes/dist/
 Servlets/HW_Servlet_HTTP_codes/nbproject/
 Servlets/HW_Servlet_HTTP_codes/build.xml
+
+#HW_ServletContext
+Servlets/HW_ServletContext/build/
+Servlets/HW_ServletContext/dist/
+Servlets/HW_ServletContext/nbproject/
+Servlets/HW_ServletContext/build.xml
